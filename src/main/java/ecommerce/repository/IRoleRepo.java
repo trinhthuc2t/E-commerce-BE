@@ -1,4 +1,4 @@
 package ecommerce.repository;
 
-public interface IRoleRepo {
+public interface IRoleRepo{
 }
