@@ -1,6 +1,8 @@
 package ecommerce.service.implement;
 import ecommerce.entity.Account;
+import ecommerce.entity.Role;
 import ecommerce.repository.IAccountRepo;
+import ecommerce.repository.IRoleRepo;
 import ecommerce.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,11 +17,25 @@ import java.util.List;
 @Service
 public class AccountService implements IAccountService {
     @Autowired
-    IAccountRepo accountRepo;
-
+    private IAccountRepo accountRepo;
+    @Autowired
+    private IRoleRepo roleRepo;
     @Override
     public void add(Account account) {
         accountRepo.save(account);
+    }
+
+    @Override
+    public Account checkRegister(Account account) {
+        Account account1 = accountRepo.findByUsername(account.getUsername());
+        if (account1 != null || account.getPassword().isEmpty()) {
+            return null;
+        } else {
+            Role role = roleRepo.findByName("ROLE_USER");
+            account.setRole(role);
+            account.setStatus("Đang hoạt động");
+            return accountRepo.save(account);
+        }
     }
 
     @Override

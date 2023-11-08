@@ -15,6 +15,7 @@ public class Account {
     private String phone;
     private String email;
     private String image;
+    private String status;
     private String address;
     private String province;
     private String district;
