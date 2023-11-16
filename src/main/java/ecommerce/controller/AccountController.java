@@ -1,8 +1,7 @@
 package ecommerce.controller;
-
 import ecommerce.entity.Account;
 import ecommerce.service.IAccountService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/accounts")
-
+@RequiredArgsConstructor
 public class AccountController {
-    @Qualifier("accountService")
-    private IAccountService accountService;
+
+    private final IAccountService accountService;
 
 
 
@@ -23,6 +22,16 @@ public class AccountController {
            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
        }
        return new ResponseEntity<>(account,HttpStatus.OK);
+    }
+
+    @GetMapping ("/check-username")
+    public boolean checkUser (@RequestParam String username){
+       return accountService.checkUser(username);
+    }
+
+    @GetMapping("/check-email")
+    public boolean checkEmail(@RequestParam String email) {
+        return accountService.checkEmail(email);
     }
 
 }

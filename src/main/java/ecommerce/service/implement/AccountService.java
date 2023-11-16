@@ -1,4 +1,5 @@
 package ecommerce.service.implement;
+
 import ecommerce.entity.Account;
 import ecommerce.entity.Role;
 import ecommerce.repository.IAccountRepo;
@@ -20,6 +21,7 @@ public class AccountService implements IAccountService {
     private IAccountRepo accountRepo;
     @Autowired
     private IRoleRepo roleRepo;
+
     @Override
     public void add(Account account) {
         accountRepo.save(account);
@@ -36,6 +38,18 @@ public class AccountService implements IAccountService {
             account.setStatus("Đang hoạt động");
             return accountRepo.save(account);
         }
+    }
+
+    @Override
+    public boolean checkUser(String username) {
+        Account account = accountRepo.findByUsername(username);
+        return account != null;
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+        Account account = accountRepo.findByUsername(email);
+        return account != null;
     }
 
     @Override

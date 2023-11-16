@@ -14,6 +14,7 @@ public class Product {
     private String name;
     private String description;
     private String price;
+    private String thumbnail;
     private int quantity;
     private LocalDateTime creatAt;
     private LocalDateTime updateAt;

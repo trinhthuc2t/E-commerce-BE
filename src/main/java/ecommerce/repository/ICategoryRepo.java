@@ -1,4 +1,7 @@
 package ecommerce.repository;
 
-public interface ICategoryRepo {
+import ecommerce.entity.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ICategoryRepo extends JpaRepository<Category,Long> {
 }
