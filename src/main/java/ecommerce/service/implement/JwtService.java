@@ -2,8 +2,8 @@ package ecommerce.service.implement;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.catalina.User;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ public class JwtService {
 
     private static final long EXPIRATION_TIME = 864_000_000;
 
-    public static String createToken(Authentication authentication) {
+    public String createToken(Authentication authentication) {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + EXPIRATION_TIME);
         User user = (User) authentication.getPrincipal();

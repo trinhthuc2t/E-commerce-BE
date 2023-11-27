@@ -8,4 +8,5 @@ public interface IAccountService extends UserDetailsService {
     Account checkRegister(Account account);
     boolean checkUser(String username);
     boolean checkEmail(String email);
+    Account checkLogin(String username, String password);
 }

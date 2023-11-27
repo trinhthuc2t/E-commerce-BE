@@ -53,6 +53,11 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    public Account checkLogin(String username, String password) {
+        return accountRepo.checkLogin(username,password);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountRepo.findByUsername(username);
         List<GrantedAuthority> roles = new ArrayList<>();
