@@ -1,5 +1,4 @@
 package ecommerce.entity;
-
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,4 +19,10 @@ public class Product {
     private LocalDateTime updateAt;
     @ManyToOne
     private Category category;
+    @ManyToOne
+    private Account account;
+    @ManyToOne
+    private ColorProduct colorProduct;
+    @ManyToOne
+    private SizeProduct sizeProduct;
 }
