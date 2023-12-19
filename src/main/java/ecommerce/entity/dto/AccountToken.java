@@ -14,7 +14,7 @@ public class AccountToken {
     private String address;
     private String email;
     private String phone;
-    private String image;
+    private String avatar;
     private double wallet;
     private String status;
     private Role role;

@@ -29,6 +29,12 @@ public class AccountController {
        return new ResponseEntity<>(account,HttpStatus.OK);
     }
 
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Account> editAccount(@PathVariable Long id, @RequestBody Account updatedAccount){
+        Account account = accountService.editAccount(id, updatedAccount);
+        return new ResponseEntity<>(account,HttpStatus.ACCEPTED);
+    }
+
     @GetMapping ("/check-username")
     public boolean checkUser (@RequestParam String username){
        return accountService.checkUser(username);
@@ -38,5 +44,4 @@ public class AccountController {
     public boolean checkEmail(@RequestParam String email) {
         return accountService.checkEmail(email);
     }
-
 }

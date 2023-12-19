@@ -1,5 +1,4 @@
 package ecommerce.service.implement;
-
 import ecommerce.entity.Account;
 import ecommerce.entity.Role;
 import ecommerce.repository.IAccountRepo;
@@ -11,9 +10,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService implements IAccountService {
@@ -64,4 +63,14 @@ public class AccountService implements IAccountService {
         roles.add(account.getRole());
         return new User(account.getUsername(), account.getPassword(), roles);
     }
+    public Account editAccount(Long id, Account updatedAccount) {
+        Optional<Account> accountOptional = accountRepo.findById(id);
+        if (accountOptional.isPresent()) {
+            updatedAccount.setPassword(accountOptional.get().getPassword());
+            return accountRepo.save(updatedAccount);
+        } else {
+            throw new RuntimeException("Không tìm thấy tài khoản");
+        }
+    }
+
 }
