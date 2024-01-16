@@ -1,4 +1,4 @@
-package ecommerce.entity.dto;
+package ecommerce.entity.Res;
 import ecommerce.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;

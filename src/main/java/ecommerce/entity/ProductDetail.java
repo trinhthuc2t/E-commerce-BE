@@ -1,18 +1,22 @@
 package ecommerce.entity;
 import lombok.Data;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 public class ProductDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-    private Double price;
-    private String thumbnail;
-
+    private int quantity;
+    private LocalDateTime creatAt;
+    private LocalDateTime updateAt;
+    @ManyToOne
+    private Product product;
+    @ManyToOne
+    private ColorProduct colorProduct;
+    @ManyToOne
+    private SizeProduct sizeProduct;
 }

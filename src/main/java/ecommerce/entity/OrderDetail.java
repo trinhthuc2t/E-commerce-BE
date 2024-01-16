@@ -13,7 +13,7 @@ public class OrderDetail {
     private Long id;
     private int quantity;
     @ManyToOne
-    private Product product;
+    private ProductDetail productDetail;
     @ManyToOne
     private Oder oder;
 }

@@ -23,5 +23,4 @@ public class Account {
     private String ward;
     @ManyToOne
     private Role role;
-
 }

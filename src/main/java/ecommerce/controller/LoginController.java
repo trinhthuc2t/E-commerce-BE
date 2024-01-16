@@ -1,7 +1,7 @@
 package ecommerce.controller;
 
 import ecommerce.entity.Account;
-import ecommerce.entity.dto.AccountToken;
+import ecommerce.entity.Res.AccountToken;
 import ecommerce.service.IAccountService;
 import ecommerce.service.implement.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;

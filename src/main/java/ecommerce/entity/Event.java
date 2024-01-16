@@ -16,7 +16,7 @@ public class Event {
     private LocalDateTime endTime;
     private String discountPercentage ;
     @ManyToOne
-    private Product product;
+    private ProductDetail productDetail;
 
 }
 
