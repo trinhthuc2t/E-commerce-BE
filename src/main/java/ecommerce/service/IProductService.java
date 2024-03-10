@@ -13,8 +13,9 @@ public interface IProductService {
 //
 //    Optional<ProductDetail> findByProductId(Long productId, Integer colorId, Integer sizeId);
 //
-//
-    Page<IProductRepo.ProductCZ> findByUserId(Long accountId, Integer colorId, Integer sizeId, String nameSearch, Pageable pageable);
+    Page<Product> findByAccountIdAndNameContaining(Long id, String name, Pageable pageable);
+
+    Page<IProductRepo.ProductCZ> findByUserId(Long accountId, Integer colorId, Integer sizeId , Pageable pageable);
 
     Page<Product> findDistinctByFilters(
             String nameSearch, double minPrice, double maxPrice, Integer colorId, Integer sizeName,

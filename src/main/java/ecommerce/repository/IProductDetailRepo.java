@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IProductDetailRepo extends JpaRepository<ProductDetail, Long> {
+    List<ProductDetail> findByProductId(Long id);
 
 Optional<ProductDetail> findByProductIdAndColorProductIdAndSizeProductId(Long productId, Integer colorId, Integer sizeId);
     @Query(nativeQuery = true, value =

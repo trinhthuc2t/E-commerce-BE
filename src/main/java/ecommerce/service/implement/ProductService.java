@@ -43,8 +43,13 @@ public class ProductService implements IProductService {
 
 
     @Override
-    public Page<IProductRepo.ProductCZ> findByUserId(Long accountId, Integer colorId, Integer sizeId,String nameSearch, Pageable pageable) {
-        return productRepo.findByUserId(accountId, colorId, sizeId, nameSearch, pageable);
+    public Page<Product> findByAccountIdAndNameContaining(Long id, String name, Pageable pageable) {
+        return productRepo.findByAccountIdAndNameContaining(id, name, pageable);
+    }
+
+    @Override
+    public Page<IProductRepo.ProductCZ> findByUserId(Long accountId, Integer colorId, Integer sizeId , Pageable pageable) {
+        return productRepo.findByUserId(accountId, colorId, sizeId, pageable);
     }
 
     @Override

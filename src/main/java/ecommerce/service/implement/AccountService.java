@@ -27,6 +27,16 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    public Account findById(Long id) {
+        return accountRepo.findById(id).get();
+    }
+
+    @Override
+    public List<Account> findByUsernameContaining(String userName) {
+        return accountRepo.findByUsernameContaining(userName);
+    }
+
+    @Override
     public Account checkRegister(Account account) {
         Account account1 = accountRepo.findByUsername(account.getUsername());
         if (account1 != null || account.getPassword().isEmpty()) {

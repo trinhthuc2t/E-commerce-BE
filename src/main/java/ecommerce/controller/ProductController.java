@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/products")
@@ -30,7 +32,7 @@ public class ProductController {
 //        return productService.getAllProductDetail(pageable);
 //    }
 
-//    @GetMapping("/category/{id}")
+    //    @GetMapping("/category/{id}")
 //    public Page<ProductDetail> getAllProductsByCategory(@PathVariable Long id,
 //                                                        @RequestParam(value = "page", defaultValue = "0") int page,
 //                                                        @RequestParam(value = "size", defaultValue = "24") int size) {
@@ -45,21 +47,33 @@ public class ProductController {
         return ResponseEntity.ok(productDetailService.findByProductIdAndColorProductIdAndSizeProductId(id, colorId, sizeId));
     }
 
+//    @GetMapping("/by-owner/{accountId}")
+//    public ResponseEntity<?> getProductByUser(@PathVariable Long accountId,
+//                                              @RequestParam(value = "colorId") Integer colorId,
+//                                              @RequestParam(value = "sizeId") Integer sizeId,
+//                                              @RequestParam(value = "page", defaultValue = "0") int page,
+//                                              @RequestParam(value = "size", defaultValue = "24") int size) {
+//        if (colorId == 0) colorId = null;
+//        if (sizeId == 0) sizeId = null;
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<IProductRepo.ProductCZ> products = productService.findByUserId(accountId, colorId, sizeId, pageable);
+//        return ResponseEntity.ok(products);
+//    }
+
     @GetMapping("/by-owner/{accountId}")
-    public ResponseEntity<?> getProductByUser(@PathVariable Long accountId,
-                                              @RequestParam(value = "colorId") Integer colorId,
-                                              @RequestParam(value = "sizeId") Integer sizeId,
-                                              @RequestParam(value = "nameSearch") String nameSearch,
-                                              @RequestParam(value = "page", defaultValue = "0") int page,
-                                              @RequestParam(value = "size", defaultValue = "24") int size) {
-        if (colorId == 0) colorId = null;
-        if (sizeId == 0) sizeId = null;
-        if (nameSearch.trim().isEmpty()) nameSearch = null;
+    public ResponseEntity<Page<Product>> findByAccountIdAndNameContaining(@PathVariable Long accountId,
+                                                                          @RequestParam String nameSearch,
+                                                                          @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                          @RequestParam(value = "size", defaultValue = "24") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<IProductRepo.ProductCZ> products = productService.findByUserId(accountId, colorId, sizeId, nameSearch ,pageable);
+        Page<Product> products = productService.findByAccountIdAndNameContaining(accountId, nameSearch, pageable);
         return ResponseEntity.ok(products);
     }
-
+  @GetMapping("/by-product/{id}")
+    public ResponseEntity<List<ProductDetail>> findByProductId(@PathVariable Long id) {
+        List<ProductDetail> productDetails = productDetailService.findByProductId(id);
+        return ResponseEntity.ok(productDetails);
+    }
 
     @GetMapping("/search-all")
     public ResponseEntity<?> findByAll(

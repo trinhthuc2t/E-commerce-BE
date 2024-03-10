@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface IProductRepo extends JpaRepository<Product, Long> {
     Optional<Product> findById(Long id);
+    Page<Product> findByAccountIdAndNameContaining(Long id, String name, Pageable pageable);
 
     @Query(nativeQuery = true, value =
             "SELECT p.*, " +
@@ -24,13 +25,11 @@ public interface IProductRepo extends JpaRepository<Product, Long> {
                     "         JOIN " +
                     "     product AS p ON pd.product_id = p.id " +
                     "WHERE p.account_id = :accountId " +
-                    "    and p.name like concat('%', :nameSearch, '%') or :nameSearch is null " +
                     "GROUP BY product_id")
     Page<IProductRepo.ProductCZ> findByUserId(
             @Param("accountId") Long accountId,
             @Param("colorId") Integer colorId,
             @Param("sizeId") Integer sizeId,
-            @Param("nameSearch") String nameSearch,
             Pageable pageable
     );
 

@@ -22,8 +22,18 @@ public class ProductDetailService implements IProductDetailService {
     private final IProductDetailRepo productDetailRepo;
 
     @Override
+    public List<ProductDetail> findByProductId(Long id) {
+        return productDetailRepo.findByProductId(id);
+    }
+
+    @Override
     public Optional<ProductDetail> findByProductIdAndColorProductIdAndSizeProductId(Long productId, Integer colorId, Integer sizeId) {
         return productDetailRepo.findByProductIdAndColorProductIdAndSizeProductId(productId,colorId,sizeId);
+    }
+
+    @Override
+    public Optional<ProductDetail> findById(Long id) {
+        return productDetailRepo.findById(id);
     }
 
 
