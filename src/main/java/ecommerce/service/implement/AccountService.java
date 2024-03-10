@@ -42,7 +42,7 @@ public class AccountService implements IAccountService {
         if (account1 != null || account.getPassword().isEmpty()) {
             return null;
         } else {
-            Role role = roleRepo.findByName("ROLE_USER");
+            Role role = roleRepo.findByName("ROLE_CUSTOMER");
             account.setRole(role);
             account.setStatus("Đang hoạt động");
             return accountRepo.save(account);
