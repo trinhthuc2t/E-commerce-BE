@@ -17,7 +17,7 @@ import java.util.Optional;
 public class ProductDetailService implements IProductDetailService {
     private final IProductDetailRepo productDetailRepo;
     private final IAccountRepo accountRepo;
-    private final IProductService productService;
+    private final IProductRepo productRepo;
     private final IColorRepo colorRepo;
     private final ISizeRepo sizeRepo;
     private final ICategoryRepo categoryRepo;
@@ -46,7 +46,7 @@ public class ProductDetailService implements IProductDetailService {
         product.setDescription(productDetailReq.getDescription());
         product.setAccount(account);
         product.setCategory(category);
-        productService.save(product);
+        productRepo.save(product);
 
 
         List<Image> images = productDetailReq.getImages();
@@ -70,6 +70,21 @@ public class ProductDetailService implements IProductDetailService {
         return productDetailRepo.save(productDetail);
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+        Product productDetail = productRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + id));
+//        Product product = productDetail.getProduct();
+
+//        if (product != null) {
+//            List<Image> images = imageRepo.findByProductId(id);
+//            imageRepo.deleteAll(images);
+//            productRepo.delete(product);
+//        }
+
+        productRepo.delete(productDetail);
+    }
+
 
     @Override
     public Optional<ProductDetail> findByProductIdAndColorProductIdAndSizeProductId(Long productId, Integer colorId, Integer sizeId) {
@@ -80,24 +95,4 @@ public class ProductDetailService implements IProductDetailService {
     public Optional<ProductDetail> findById(Long id) {
         return productDetailRepo.findById(id);
     }
-
-//    @Override
-//    public ProductDetailReq save(Long Id, ProductDetailReq productDetailReq) {
-//        return null;
-//    }
-
-
-//
-
-//
-//    public Page<ProductDetail> getAllProductDetail(Long categoryId, Pageable pageable) {
-//        Set<Product> products = productRepo.getByCategoryId(categoryId);
-//        List<ProductDetail> productDetails = products.stream()
-//                .map(Product::getProductDetail)
-//                .distinct().collect(Collectors.toList());
-//        int start = (int) pageable.getOffset();
-//        int end = Math.min((start + pageable.getPageSize()), productDetails.size());
-//
-//        return new PageImpl<>(productDetails.subList(start, end), pageable, productDetails.size());
-//    }
 }

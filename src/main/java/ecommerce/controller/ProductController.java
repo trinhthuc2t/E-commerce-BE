@@ -23,23 +23,6 @@ public class ProductController {
     private final IProductService productService;
     private final IProductDetailService productDetailService;
 
-
-    //    @GetMapping
-//    public Page<ProductDetail> getAllProducts(
-//            @RequestParam(value = "page", defaultValue = "0") int page,
-//            @RequestParam(value = "size", defaultValue = "100") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return productService.getAllProductDetail(pageable);
-//    }
-
-    //    @GetMapping("/category/{id}")
-//    public Page<ProductDetail> getAllProductsByCategory(@PathVariable Long id,
-//                                                        @RequestParam(value = "page", defaultValue = "0") int page,
-//                                                        @RequestParam(value = "size", defaultValue = "24") int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return productDetailService.getAllProductDetail(id, pageable);
-//    }
-//
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductDetail(@PathVariable Long id, @RequestParam Integer colorId, @RequestParam Integer sizeId) {
         if (sizeId == 0) sizeId = null;
@@ -51,7 +34,7 @@ public class ProductController {
     public ResponseEntity<Page<Product>> findByAccountIdAndNameContaining(@PathVariable Long accountId,
                                                                           @RequestParam String nameSearch,
                                                                           @RequestParam(value = "page", defaultValue = "0") int page,
-                                                                          @RequestParam(value = "size", defaultValue = "24") int size) {
+                                                                          @RequestParam(value = "size", defaultValue = "33") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> products = productService.findByAccountIdAndNameContaining(accountId, nameSearch, pageable);
         return ResponseEntity.ok(products);
@@ -67,6 +50,11 @@ public class ProductController {
     public ResponseEntity<ProductDetailReq> findByProductId(@PathVariable Long id, @RequestBody ProductDetailReq productDetailReq) {
         productDetailService.save(id, productDetailReq);
         return ResponseEntity.ok(productDetailReq);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteProductById(@PathVariable Long id) {
+        productDetailService.deleteProduct(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/search-all")
