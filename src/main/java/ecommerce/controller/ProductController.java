@@ -2,7 +2,7 @@ package ecommerce.controller;
 
 import ecommerce.entity.Product;
 import ecommerce.entity.ProductDetail;
-import ecommerce.repository.IProductRepo;
+import ecommerce.entity.Req.ProductDetailReq;
 import ecommerce.service.IProductDetailService;
 import ecommerce.service.IProductService;
 import lombok.RequiredArgsConstructor;
@@ -47,19 +47,6 @@ public class ProductController {
         return ResponseEntity.ok(productDetailService.findByProductIdAndColorProductIdAndSizeProductId(id, colorId, sizeId));
     }
 
-//    @GetMapping("/by-owner/{accountId}")
-//    public ResponseEntity<?> getProductByUser(@PathVariable Long accountId,
-//                                              @RequestParam(value = "colorId") Integer colorId,
-//                                              @RequestParam(value = "sizeId") Integer sizeId,
-//                                              @RequestParam(value = "page", defaultValue = "0") int page,
-//                                              @RequestParam(value = "size", defaultValue = "24") int size) {
-//        if (colorId == 0) colorId = null;
-//        if (sizeId == 0) sizeId = null;
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<IProductRepo.ProductCZ> products = productService.findByUserId(accountId, colorId, sizeId, pageable);
-//        return ResponseEntity.ok(products);
-//    }
-
     @GetMapping("/by-owner/{accountId}")
     public ResponseEntity<Page<Product>> findByAccountIdAndNameContaining(@PathVariable Long accountId,
                                                                           @RequestParam String nameSearch,
@@ -69,45 +56,32 @@ public class ProductController {
         Page<Product> products = productService.findByAccountIdAndNameContaining(accountId, nameSearch, pageable);
         return ResponseEntity.ok(products);
     }
-  @GetMapping("/by-product/{id}")
+
+    @GetMapping("/by-product/{id}")
     public ResponseEntity<List<ProductDetail>> findByProductId(@PathVariable Long id) {
         List<ProductDetail> productDetails = productDetailService.findByProductId(id);
         return ResponseEntity.ok(productDetails);
     }
 
+    @PostMapping("/create/{id}")
+    public ResponseEntity<ProductDetailReq> findByProductId(@PathVariable Long id, @RequestBody ProductDetailReq productDetailReq) {
+        productDetailService.save(id, productDetailReq);
+        return ResponseEntity.ok(productDetailReq);
+    }
+
     @GetMapping("/search-all")
-    public ResponseEntity<?> findByAll(
-            @RequestParam("nameSearch") String nameSearch,
-            @RequestParam("minPrice") Double minPrice,
-            @RequestParam("maxPrice") Double maxPrice,
-            @RequestParam("colorId") Integer colorId,
-            @RequestParam("sizeId") Integer sizeId,
+    public ResponseEntity<Page<Product>> findByAll(
+            @RequestParam(value = "nameSearch", required = false) String nameSearch,
+            @RequestParam(value = "minPrice", defaultValue = "0") double minPrice,
+            @RequestParam(value = "maxPrice", defaultValue = "0") double maxPrice,
+            @RequestParam(value = "colorId", defaultValue = "0") Integer colorId,
+            @RequestParam(value = "sizeId", defaultValue = "0") Integer sizeId,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "24") int size,
+            @RequestParam(value = "size", defaultValue = "30") int size,
             @RequestParam(value = "sort", defaultValue = "") String sort,
             @RequestParam(value = "direction", defaultValue = "asc") String direction
     ) {
-        double maxPriceCover = (maxPrice != 0) ? maxPrice : Double.MAX_VALUE;
-        Integer inputColor = (colorId != 0) ? colorId : null;
-        Integer inputSize = (sizeId != 0) ? sizeId : null;
-        String name = (nameSearch.trim().isEmpty()) ? null : nameSearch.trim();
-
-        String sort2 = (sort.trim().isEmpty()) ? null : sort.trim();
-        Pageable pageable = null;
-
-        if (sort2 != null) {
-            if (sort2.equals("sortPrice")) {
-                pageable = PageRequest.of(page, size, Sort.by("price"));
-//            } else {
-//                pageable = PageRequest.of(page, size, Sort.by( "creatAt"));
-            }
-        } else {
-            pageable = PageRequest.of(page, size);
-        }
-        Page<Product> products = productService.findDistinctByFilters(
-                name, minPrice, maxPriceCover, inputColor, inputSize, direction, pageable
-        );
-
+        Page<Product> products = productService.findDistinctByFilters(nameSearch, minPrice, maxPrice, colorId, sizeId, sort, direction, page, size);
         return ResponseEntity.ok(products);
     }
 }

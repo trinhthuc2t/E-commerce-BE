@@ -16,8 +16,8 @@ public interface IProductService {
     Page<Product> findByAccountIdAndNameContaining(Long id, String name, Pageable pageable);
 
     Page<IProductRepo.ProductCZ> findByUserId(Long accountId, Integer colorId, Integer sizeId , Pageable pageable);
-
+    Product save(Product product);
     Page<Product> findDistinctByFilters(
             String nameSearch, double minPrice, double maxPrice, Integer colorId, Integer sizeName,
-            String direction, Pageable pageable);
+            String direction, String s, int page, int size);
 }

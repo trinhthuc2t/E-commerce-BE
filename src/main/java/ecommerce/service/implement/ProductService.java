@@ -6,7 +6,9 @@ import ecommerce.repository.IProductRepo;
 import ecommerce.service.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -53,8 +55,38 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page<Product> findDistinctByFilters(String nameSearch, double minPrice, double maxPrice, Integer colorId, Integer sizeId, String direction, Pageable pageable) {
-        return productRepo.findDistinctByFilters(nameSearch, minPrice, maxPrice, colorId, sizeId, pageable);
+    public Product save(Product product) {
+        return productRepo.save(product);
+    }
+
+//    @Override
+//    public Page<Product> findDistinctByFilters(String nameSearch, double minPrice, double maxPrice, Integer colorId, Integer sizeId, String direction, Pageable pageable) {
+//        return productRepo.findDistinctByFilters(nameSearch, minPrice, maxPrice, colorId, sizeId, pageable);
+//    }
+    public Page<Product> findDistinctByFilters(String nameSearch, double minPrice, double maxPrice, Integer colorId, Integer sizeId, String sort, String direction, int page, int size) {
+        double maxPriceCover = (maxPrice != 0) ? maxPrice : Double.MAX_VALUE;
+        Integer inputColor = (colorId != 0) ? colorId : null;
+        Integer inputSize = (sizeId != 0) ? sizeId : null;
+        String name = (nameSearch != null && !nameSearch.trim().isEmpty()) ? nameSearch.trim() : null;
+        Sort sorting = null;
+
+        if (sort != null && !sort.trim().isEmpty()) {
+            if (sort.equals("sortPrice")) {
+                sorting = Sort.by("price");
+            } else {
+                // Add other sorting options if needed
+                // sorting = Sort.by("creatAt");
+            }
+        }
+
+        Pageable pageable;
+        if (sorting != null) {
+            pageable = PageRequest.of(page, size, Sort.by(direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, String.valueOf(sorting)));
+        } else {
+            pageable = PageRequest.of(page, size, direction.equals("asc") ? Sort.by(Sort.Direction.ASC, "id") : Sort.by(Sort.Direction.DESC, "id"));
+        }
+
+        return productRepo.findDistinctByFilters(name, minPrice, maxPriceCover, inputColor, inputSize, pageable);
     }
 
 }

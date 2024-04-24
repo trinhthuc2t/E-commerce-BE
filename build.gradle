@@ -32,10 +32,5 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
-
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
 }
